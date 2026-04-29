@@ -1,0 +1,69 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  platform-deps:
+    name: Platform deps (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: macOS — install coreutils for GNU timeout
+        if: matrix.os == 'macos-latest'
+        run: brew install coreutils
+
+      - name: Detect timeout / gtimeout
+        run: |
+          cmd="$(command -v timeout || command -v gtimeout || true)"
+          if [ -z "$cmd" ]; then
+            echo "FAIL: no GNU timeout"
+            exit 1
+          fi
+          echo "✓ Found: $cmd"
+          $cmd --version
+
+      - name: Verify bash, jq, curl present
+        run: |
+          bash --version | head -n 1
+          jq --version
+          curl --version | head -n 1
+
+      - name: Verify prompt artifacts present
+        run: |
+          test -f prompts/system-prompt.md
+          test -f prompts/consolidation-prompt.md
+          test -f prompts/severity-prompt.md
+          test -f prompts/LICENSE
+          echo "✓ All prompts present"
+
+      - name: Verify sample plan and template
+        run: |
+          test -f examples/sample-plan.md
+          test -f examples/expected-findings-template.md
+
+      - name: Verify final/redteam.sh syntax (bash -n)
+        run: |
+          bash -n 06-going-further/final/redteam.sh
+          bash -n 00-prerequisites/check-env.sh
+
+  shellcheck:
+    name: ShellCheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run shellcheck on all .sh files
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y shellcheck
+          shellcheck --version
+          # SC2086: intentional word-splitting on $cli to allow flag overrides
+          # via REDTEAM_*_CMD env vars (e.g. "codex exec --print")
+          find . -name '*.sh' -print0 | xargs -0 shellcheck --exclude=SC2086
