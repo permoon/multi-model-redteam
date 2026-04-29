@@ -1,5 +1,6 @@
 # Red team output directories (timestamped)
 redteam-out-*/
+out-*/
 out/
 
 # Local env / secrets
