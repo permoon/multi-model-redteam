@@ -1,0 +1,25 @@
+# Red team output directories (timestamped)
+redteam-out-*/
+out/
+
+# Local env / secrets
+.env
+.env.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/
+.idea/
+*.swp
+
+# Python (in case readers run target-code.py locally)
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Local notes
+NOTES.md
+TODO.local.md
