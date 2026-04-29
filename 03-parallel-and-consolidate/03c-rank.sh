@@ -9,6 +9,9 @@
 #   bash 03c-rank.sh
 set -euo pipefail
 
+# Run from this script's directory so default relative paths resolve.
+cd "$(dirname "$0")"
+
 CONSOLIDATED=${1:-./out/consolidated.md}
 PROMPT_FILE=${2:-../prompts/severity-prompt.md}
 RANK_CMD=${REDTEAM_RANKER:-"claude --print"}

@@ -7,6 +7,10 @@
 # metadata header from ../examples/expected-findings-template.md.
 set -euo pipefail
 
+# Always run from this script's directory so relative paths resolve correctly,
+# regardless of where the user invokes the script from.
+cd "$(dirname "$0")"
+
 OUT="./out-$(date +%Y%m%d-%H%M%S)"
 SCRIPT="../06-going-further/final/redteam.sh"
 

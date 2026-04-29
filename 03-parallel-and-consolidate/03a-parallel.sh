@@ -12,6 +12,9 @@
 #   bash 03a-parallel.sh ../examples/sample-plan.md
 set -euo pipefail
 
+# Run from this script's directory so default relative paths resolve.
+cd "$(dirname "$0")"
+
 PLAN_FILE=${1:?usage: $0 <plan.md>}
 PROMPT_FILE=${2:-../prompts/system-prompt.md}
 OUT_DIR=${3:-./out}

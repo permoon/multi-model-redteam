@@ -10,6 +10,9 @@
 #   bash 03b-consolidate.sh
 set -euo pipefail
 
+# Run from this script's directory so default relative paths resolve.
+cd "$(dirname "$0")"
+
 OUT_DIR=${1:-./out}
 PROMPT_FILE=${2:-../prompts/consolidation-prompt.md}
 CONSOL_CMD=${REDTEAM_CONSOLIDATOR:-"claude --print"}
