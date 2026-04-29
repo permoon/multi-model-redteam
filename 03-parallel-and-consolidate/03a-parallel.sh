@@ -18,7 +18,7 @@ cd "$(dirname "$0")"
 PLAN_FILE=${1:?usage: $0 <plan.md>}
 PROMPT_FILE=${2:-../prompts/system-prompt.md}
 OUT_DIR=${3:-./out}
-TIMEOUT_SEC=${REDTEAM_TIMEOUT:-180}
+TIMEOUT_SEC=${REDTEAM_TIMEOUT:-600}
 TIMEOUT_CMD="${REDTEAM_TIMEOUT_CMD:-$(command -v timeout || command -v gtimeout || true)}"
 CLAUDE_CMD=${REDTEAM_CLAUDE_CMD:-"claude --print"}
 CODEX_CMD=${REDTEAM_CODEX_CMD:-"codex exec --skip-git-repo-check"}

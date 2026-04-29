@@ -16,7 +16,7 @@ set -euo pipefail
 PLAN=${1:?usage: $0 <plan.md> [out_dir]}
 OUT=${2:-./redteam-out-$(date +%Y%m%d-%H%M%S)}
 PROMPT_DIR=${REDTEAM_PROMPTS:-./prompts}
-TIMEOUT_SEC=${REDTEAM_TIMEOUT:-180}
+TIMEOUT_SEC=${REDTEAM_TIMEOUT:-600}
 TIMEOUT_CMD="${REDTEAM_TIMEOUT_CMD:-$(command -v timeout || command -v gtimeout || true)}"
 CLAUDE_CMD=${REDTEAM_CLAUDE_CMD:-"claude --print"}
 CODEX_CMD=${REDTEAM_CODEX_CMD:-"codex exec --skip-git-repo-check"}
