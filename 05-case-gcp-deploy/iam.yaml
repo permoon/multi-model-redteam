@@ -1,0 +1,6 @@
+# IAM bindings for news-fetcher Cloud Run + Workflows deploy.
+# Apply with: gcloud projects add-iam-policy-binding PROJECT --member ... --role ...
+- member: "serviceAccount:news-fetcher-sa@PROJECT.iam.gserviceaccount.com"
+  role: "roles/editor"
+- member: "serviceAccount:workflows-sa@PROJECT.iam.gserviceaccount.com"
+  role: "roles/run.invoker"

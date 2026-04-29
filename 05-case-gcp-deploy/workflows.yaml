@@ -1,0 +1,15 @@
+# Hourly batch trigger for news-fetcher.
+# Cloud Scheduler invokes this workflow at "0 * * * *".
+main:
+  steps:
+    - call_batch:
+        call: http.post
+        args:
+          url: https://news-fetcher-xxxxx-uc.a.run.app/batch
+          auth:
+            type: OIDC
+        result: response
+    - log_result:
+        call: sys.log
+        args:
+          text: ${response.body}
