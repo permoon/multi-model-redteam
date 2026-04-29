@@ -102,7 +102,7 @@ By the end of 7 chapters:
 
 ## Prerequisites
 
-- **Bash 4+**, `jq`, `curl`
+- **Bash 4+** (works on Git Bash on Windows; macOS bash 3.2 also OK)
 - **GNU `timeout`** (macOS users: `brew install coreutils` gives you
   `gtimeout`; scripts auto-detect)
 - Three LLM CLIs installed and authenticated:

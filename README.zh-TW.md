@@ -102,7 +102,7 @@ Design to review:
 
 ## Prerequisites
 
-- **Bash 4+**、`jq`、`curl`
+- **Bash 4+**（Windows 用 Git Bash、macOS 預設 bash 3.2 也 OK）
 - **GNU `timeout`**（macOS 使用者：`brew install coreutils` 會給你 `gtimeout`，
   腳本會自動偵測）
 - 三家 LLM CLI 都裝好且已認證：

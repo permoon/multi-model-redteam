@@ -19,8 +19,8 @@ PROMPT_DIR=${REDTEAM_PROMPTS:-./prompts}
 TIMEOUT_SEC=${REDTEAM_TIMEOUT:-180}
 TIMEOUT_CMD="${REDTEAM_TIMEOUT_CMD:-$(command -v timeout || command -v gtimeout || true)}"
 CLAUDE_CMD=${REDTEAM_CLAUDE_CMD:-"claude --print"}
-CODEX_CMD=${REDTEAM_CODEX_CMD:-"codex exec --print"}
-GEMINI_CMD=${REDTEAM_GEMINI_CMD:-"gemini --print"}
+CODEX_CMD=${REDTEAM_CODEX_CMD:-"codex exec --skip-git-repo-check"}
+GEMINI_CMD=${REDTEAM_GEMINI_CMD:-"gemini"}
 
 [ -z "$TIMEOUT_CMD" ] && { echo "FAIL: install GNU timeout (macOS: brew install coreutils)"; exit 1; }
 [ -f "$PROMPT_DIR/system-prompt.md" ] || { echo "FAIL: $PROMPT_DIR/system-prompt.md not found (override with REDTEAM_PROMPTS)"; exit 1; }
