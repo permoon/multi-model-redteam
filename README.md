@@ -68,15 +68,44 @@ in the [Course outline](#course-outline) below.
 
 ## What you get from one run
 
-Example output (Day 4 actual run on the BigQuery pipeline case — see
-[chapter 4](./04-case-bq-pipeline/) for the full plan + raw outputs):
+Example output from a real run on the BigQuery pipeline case
+([chapter 4](./04-case-bq-pipeline/) for the full plan + raw outputs):
 
 <details>
-<summary>📋 Example findings (truncated)</summary>
+<summary>📋 Example findings (chapter 04, 2026-04-29 canonical run — abbreviated)</summary>
 
-> **Note**: this is filled in on Day 4 of the build (real output from running
-> all three models against `04-case-bq-pipeline/plan.md`). Currently empty
-> because the case has not been run yet.
+**Consensus (all 3 models flagged):**
+
+- `INSERT INTO order_events_dedup` is not idempotent. Any retry doubles
+  yesterday's rows. The existing "less-than-50%-of-expected" alert is
+  one-sided and can't catch over-counts.
+
+**Unique to Claude:**
+
+- **Step D's correlated subquery has unqualified column references →
+  imputation silently no-ops after day 1.** Codex and Gemini both
+  *cited* this same SQL block and analysed downstream behaviour
+  assuming it worked. Neither tested whether `WHERE m2.user_id =
+  user_id` actually binds in BigQuery's scoping rules. The project's
+  stated purpose (impute missing checkout events) would silently fail
+  for 2–8 weeks before anyone noticed.
+
+**Unique to Gemini:**
+
+- **Midnight-boundary race in dedup across partitions.** A duplicate
+  retried at 23:59:59 (Day 1) and 00:00:02 (Day 2) lands in different
+  daily partitions; Step C's `GROUP BY` only sees within-day, so the
+  cross-partition pair is never deduped.
+
+**Unique to Codex:**
+
+- **Truncated CSV from GCS, BQ load succeeds anyway.** Up to ~50%
+  silent data loss can pass the row-count alert because the file is
+  still syntactically valid. Requires Postgres ↔ GCS ↔ BQ tri-count
+  reconciliation to detect.
+
+Full output: [04-case-bq-pipeline/expected-findings.md](./04-case-bq-pipeline/expected-findings.md)
+(13 consensus + 11 unique + 3 triple-blind-spot findings).
 
 </details>
 
@@ -112,10 +141,10 @@ By the end of 7 chapters:
 - API keys for all three (free tiers cover chapters 1–3; chapters 4–5 need
   ~$5 total)
 
-> **Tested with**: claude-code vX.Y, codex-cli v0.125+, gemini-cli vX.Y
-> (as of 2026-04). The three CLIs are not stable public APIs — flags / auth
-> / default model may change. If your version differs, see
-> [00-prerequisites](./00-prerequisites/).
+> **Tested with**: claude-code v2.1.114, codex-cli v0.125.0,
+> gemini-cli v0.36.0 (as of 2026-04). The three CLIs are not stable
+> public APIs — flags / auth / default model may change. If your
+> version differs, see [00-prerequisites](./00-prerequisites/).
 
 See [00-prerequisites](./00-prerequisites/) for full setup.
 

@@ -70,14 +70,41 @@ Design to review:
 
 ## 一次跑完你會得到什麼
 
-範例輸出（Day 4 在 BigQuery pipeline 案例上的實測 — 詳見
+實測範例（chapter 04 BigQuery pipeline 案例 — 詳見
 [chapter 4](./04-case-bq-pipeline/README.zh-TW.md)）：
 
 <details>
-<summary>📋 範例 finding（節錄）</summary>
+<summary>📋 範例 finding（chapter 04，2026-04-29 canonical run，節錄）</summary>
 
-> **註**：此段在 Day 4 build 時填入（實際跑三家 model 對 `04-case-bq-pipeline/plan.md`
-> 的結果）。目前為空因為案例尚未跑過。
+**Consensus（三家都抓到）：**
+
+- `INSERT INTO order_events_dedup` 不具 idempotency。任何 retry 都會
+  讓昨天的 row 翻倍。現有「< 預期 50%」的 alert 是單向的，抓不到
+  over-count
+
+**Claude 獨家：**
+
+- **Step D 的 correlated subquery 有 unqualified column references →
+  imputation 從第二天起靜默 no-op。** Codex 和 Gemini 兩家**都引用了
+  同一段 SQL** 並分析下游行為，但**都假設它能跑**。沒人去檢查
+  `WHERE m2.user_id = user_id` 在 BigQuery 的 scoping rules 下是否
+  真的綁到外層 query。專案的核心目標（補 missing checkout 事件）
+  會靜默失效 2-8 週，沒人會注意
+
+**Gemini 獨家：**
+
+- **Dedup 跨 partition 的午夜邊界 race。** 同一個事件在 23:59:59（Day
+  1）和 00:00:02（Day 2）retry 兩次，會落到不同的日 partition。
+  Step C 的 `GROUP BY` 只看當天，這對跨分區的副本永遠不會被 dedup
+
+**Codex 獨家：**
+
+- **GCS CSV 被截斷、BQ load 仍然成功。** 最多 ~50% 的靜默資料遺失
+  可以通過 row-count alert，因為截斷後的檔案仍然語法合法。需要
+  Postgres ↔ GCS ↔ BQ 三方 row count 對帳才能偵測
+
+完整 output：[04-case-bq-pipeline/expected-findings.md](./04-case-bq-pipeline/expected-findings.md)
+（13 consensus + 11 unique + 3 triple-blind-spot finding）
 
 </details>
 
@@ -111,7 +138,7 @@ Design to review:
   - [Gemini CLI](https://github.com/google-gemini/gemini-cli)
 - 三家的 API key（chapter 1–3 用 free tier 即可；chapter 4–5 約需 $5 總計）
 
-> **測試版本**：claude-code vX.Y、codex-cli v0.125+、gemini-cli vX.Y
+> **測試版本**：claude-code v2.1.114、codex-cli v0.125.0、gemini-cli v0.36.0
 > （as of 2026-04）。三家 CLI **不是 stable public API**，flags / auth /
 > default model 隨時可能變。如果你的版本不同，見
 > [00-prerequisites](./00-prerequisites/README.zh-TW.md)。
