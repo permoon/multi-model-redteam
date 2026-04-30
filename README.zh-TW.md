@@ -12,7 +12,7 @@
 
 [English README](./README.md) · [方法論](./docs/methodology.zh-TW.md) · [章節索引](#章節索引)
 
-![demo](./assets/hero.gif)
+![architecture](./assets/architecture.svg)
 
 ## 三種跑法，都不用安裝這個 repo
 

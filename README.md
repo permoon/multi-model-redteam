@@ -17,7 +17,7 @@
 
 [中文 README](./README.zh-TW.md) · [Methodology](./docs/methodology.md) · [Course outline](#course-outline)
 
-![demo](./assets/hero.gif)
+![architecture](./assets/architecture.svg)
 
 ## Three ways to run it. None require an install of this repo.
 
