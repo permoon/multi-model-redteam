@@ -2,9 +2,15 @@
 
 > A 100-line bash script that runs 3 LLMs as your design red team. Whatever one model misses, the other two often catch.
 
-> **Not jailbreak red teaming.** This is design review red teaming for
-> AI-assisted software planning. If you're looking for prompt injection
-> or safety alignment, see [garak](https://github.com/leondz/garak) or
+> **Not jailbreak red teaming.** AI is doing more than just writing
+> code now — it's drafting the plans that drive the code. Any flaw
+> that slips into the plan ripples through everything AI builds from
+> it. Catching design issues at the plan stage, before code gets
+> written, matters more than it used to. That's what this repo is
+> for.
+
+> If you're looking for prompt injection or safety alignment, see
+> [garak](https://github.com/leondz/garak) or
 > [promptfoo](https://github.com/promptfoo/promptfoo).
 
 [中文 README](./README.zh-TW.md) · [Methodology](./docs/methodology.md) · [Course outline](#course-outline)
