@@ -28,8 +28,8 @@ of bash.
 ## Style
 
 - Code: bash + minimal Python. No frameworks.
-- Comments in English. Documentation prefers English first; Chinese
-  versions are abridged in `README.zh-TW.md` style.
+- Comments in English. Documentation: English first, with full
+  Chinese translations in `*.zh-TW.md` (not abridged).
 - Scripts must be cross-platform (macOS bash 3, Linux bash 5, WSL on
   Windows).
 - All `timeout` calls auto-detect `timeout` vs `gtimeout`.
