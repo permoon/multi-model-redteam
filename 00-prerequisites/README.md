@@ -1,16 +1,20 @@
 # Chapter 00 — Prerequisites
 
-## What you'll do in this chapter
+A few things to install before chapter 1. Should take about 10 minutes
+if you've never used these CLIs before, less if you have.
 
-- Install Claude Code, Codex CLI, Gemini CLI
+## What you'll do here
+
+- Install Claude Code, Codex CLI, and Gemini CLI
 - Get API keys for all three
-- Estimate your budget (target: < $5 to complete the whole course)
-- Verify your environment with `check-env.sh`
+- Check your budget (the goal: stay under $5 for the whole course)
+- Run `check-env.sh` to confirm everything works
 
 ## Install the three CLIs
 
 ### Claude Code
-See [official install guide](https://docs.claude.com/en/docs/claude-code).
+
+[Official install guide](https://docs.claude.com/en/docs/claude-code).
 
 ```bash
 npm install -g @anthropic-ai/claude-code
@@ -18,18 +22,21 @@ claude --version  # should print a version
 ```
 
 ### Codex CLI
-See [official install guide](https://github.com/openai/codex-cli).
+
+[Official install guide](https://github.com/openai/codex-cli).
 
 ```bash
 npm install -g @openai/codex
 codex --version
 ```
 
-> **Important**: this tutorial requires `codex-cli v0.125+`. The earlier
-> `v0.121` shipped with `gpt-5.5` as default, which is no longer supported.
+> **Important**: this tutorial requires `codex-cli v0.125+`. Earlier
+> `v0.121` shipped with `gpt-5.5` as the default, which is no longer
+> supported. Upgrade if you have an older version.
 
 ### Gemini CLI
-See [official install guide](https://github.com/google-gemini/gemini-cli).
+
+[Official install guide](https://github.com/google-gemini/gemini-cli).
 
 ```bash
 npm install -g @google/gemini-cli
@@ -45,29 +52,31 @@ export OPENAI_API_KEY="sk-..."
 export GEMINI_API_KEY="..."
 ```
 
-If you use ChatGPT account auth for Codex CLI (not API key), see Codex docs
-for the OAuth flow. **Note**: ChatGPT-account Codex cannot use the bare
-`gpt-5` model; use the default ChatGPT-allowed model.
+If you use ChatGPT account auth for Codex CLI instead of an API key,
+follow Codex's docs for the OAuth flow. **Note**: ChatGPT-account
+Codex can't use the bare `gpt-5` model, so use the default
+ChatGPT-allowed model.
 
 ## macOS users: install GNU timeout
 
-The repo's scripts use `timeout` to bound LLM call durations. macOS doesn't
-ship GNU `timeout` by default:
+The scripts in this repo use `timeout` to bound how long any one LLM
+call can run. macOS doesn't ship GNU `timeout` by default:
 
 ```bash
-brew install coreutils    # provides `gtimeout`
+brew install coreutils    # this gives you `gtimeout`
 ```
 
-The scripts auto-detect `timeout` or `gtimeout`, so once installed you don't
-need to do anything else.
+The scripts auto-detect either `timeout` or `gtimeout`, so once
+you've installed it you don't need to do anything else.
 
-## Verify your environment
+## Check your environment
 
 ```bash
 bash check-env.sh
 ```
 
 Expected output:
+
 ```
 ✓ Found timeout: /opt/homebrew/bin/gtimeout
 Checking Claude Code...
@@ -78,9 +87,10 @@ Checking Gemini CLI...
     export REDTEAM_TIMEOUT_CMD=/opt/homebrew/bin/gtimeout
 ```
 
-If any check fails, it tells you which command and what to install.
+If anything fails, the script tells you which command and what to
+install.
 
-## Budget estimate
+## Budget
 
 Per full red-team run on a typical plan:
 
@@ -90,20 +100,25 @@ Per full red-team run on a typical plan:
 | Medium (chapter 4 BQ plan, ~100 lines) | ~10k in, ~12k out | ~$0.30 |
 | Large (chapter 5 GCP plan, ~150 lines) | ~15k in, ~15k out | ~$0.50 |
 
-Whole course (chapters 1–6 ~6 runs total): **< $5**.
+The whole course (chapters 1–6, about 6 runs total): **under $5**.
 
-## Common pitfalls
+## Things that go wrong
 
-- **macOS without coreutils** → `timeout: command not found`. Fix with
-  `brew install coreutils`.
-- **Codex CLI v0.121 or older** → "model not supported". Upgrade to v0.125+.
-- **ChatGPT account using `gpt-5` directly** → 400 error. Use default
-  ChatGPT-allowed model.
-- **Gemini CLI in some regions** → first call fails with "API not enabled".
-  Enable the relevant API in your GCP console.
-- **Windows native (no WSL)** → bash `&` / `wait` parallel syntax not
-  supported reliably. Use WSL.
+A short list of things readers have actually hit:
+
+- **macOS without coreutils.** Error: `timeout: command not found`.
+  Fix: `brew install coreutils`.
+- **Codex CLI v0.121 or older.** Error mentioning "model not
+  supported". Fix: upgrade to v0.125+.
+- **ChatGPT account using `gpt-5` directly.** Returns a 400. Use the
+  default ChatGPT-allowed model instead.
+- **Gemini CLI in some regions.** First call fails with "API not
+  enabled". Fix: enable the relevant API in your GCP console.
+- **Windows native (no WSL).** Bash `&` and `wait` parallel syntax
+  isn't reliable there. Use WSL.
 
 ## Next
 
 [Chapter 01 — Why one LLM isn't enough](../01-why-one-llm-isnt-enough/)
+
+[← Back to README](../README.md) · [中文版](./README.zh-TW.md)

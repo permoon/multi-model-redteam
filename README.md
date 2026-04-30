@@ -1,10 +1,10 @@
 # multi-model-redteam
 
-> A 100-line bash that runs 3 LLMs as your design red team. Find what one model misses.
+> A 100-line bash script that runs 3 LLMs as your design red team. Whatever one model misses, the other two often catch.
 
 > **Not jailbreak red teaming.** This is design review red teaming for
-> AI-assisted software planning. If you're looking for prompt injection /
-> safety alignment, see [garak](https://github.com/leondz/garak) or
+> AI-assisted software planning. If you're looking for prompt injection
+> or safety alignment, see [garak](https://github.com/leondz/garak) or
 > [promptfoo](https://github.com/promptfoo/promptfoo).
 
 [中文 README](./README.zh-TW.md) · [Methodology](./docs/methodology.md) · [Course outline](#course-outline)
@@ -21,11 +21,13 @@ bash 06-going-further/final/redteam.sh examples/sample-plan.md
 # → ./redteam-out-<timestamp>/ranked.md
 ```
 
-Cost: ~$0.05 for the sample plan, ~$0.50–2.00 for production-size plans.
+Cost: about $0.05 for the sample plan, $0.50–2.00 for production-size
+plans.
 
-## Don't want to install? Copy this prompt directly
+## Don't want to install? Just copy the prompt
 
-You can paste this into Claude / ChatGPT / Gemini chat UI without any setup:
+Paste this into Claude, ChatGPT, or Gemini's chat UI. No install
+needed.
 
 <details>
 <summary>📋 The 5-failure-dimension red team prompt</summary>
@@ -63,46 +65,52 @@ Design to review:
 
 </details>
 
-The full method (3 LLMs in parallel + consolidation + severity ranking) is
-in the [Course outline](#course-outline) below.
+The full method (3 LLMs in parallel + consolidation + severity
+ranking) is in the [Course outline](#course-outline) below. Run that
+prompt against any one of your model of choice and you'll already see
+some lift over reviewing without it; running it across three models
+in parallel is where the real lift comes from.
 
 ## What you get from one run
 
 Example output from a real run on the BigQuery pipeline case
-([chapter 4](./04-case-bq-pipeline/) for the full plan + raw outputs):
+(see [chapter 4](./04-case-bq-pipeline/) for the full plan + raw
+outputs):
 
 <details>
-<summary>📋 Example findings (chapter 04, 2026-04-29 canonical run — abbreviated)</summary>
+<summary>📋 Example findings (chapter 04, 2026-04-29 canonical run, abbreviated)</summary>
 
-**Consensus (all 3 models flagged):**
+**All 3 models flagged this:**
 
-- `INSERT INTO order_events_dedup` is not idempotent. Any retry doubles
-  yesterday's rows. The existing "less-than-50%-of-expected" alert is
-  one-sided and can't catch over-counts.
+- `INSERT INTO order_events_dedup` is not idempotent. Any retry
+  doubles yesterday's rows. The existing "less-than-50%-of-expected"
+  alert is one-sided and can't catch over-counts.
 
-**Unique to Claude:**
+**Only Claude found this:**
 
-- **Step D's correlated subquery has unqualified column references →
-  imputation silently no-ops after day 1.** Codex and Gemini both
-  *cited* this same SQL block and analysed downstream behaviour
-  assuming it worked. Neither tested whether `WHERE m2.user_id =
-  user_id` actually binds in BigQuery's scoping rules. The project's
-  stated purpose (impute missing checkout events) would silently fail
-  for 2–8 weeks before anyone noticed.
+- **Step D's correlated subquery has unqualified column references,
+  so the imputation step silently does nothing after day one.** Codex
+  and Gemini both *cited* this same SQL block in their reviews and
+  carried on assuming it worked. Neither tested whether `WHERE
+  m2.user_id = user_id` actually binds the way the writer intended in
+  BigQuery's scoping rules. The project's whole purpose (filling in
+  missing checkout events) would silently fail for 2–8 weeks before
+  anyone noticed.
 
-**Unique to Gemini:**
+**Only Gemini found this:**
 
-- **Midnight-boundary race in dedup across partitions.** A duplicate
-  retried at 23:59:59 (Day 1) and 00:00:02 (Day 2) lands in different
-  daily partitions; Step C's `GROUP BY` only sees within-day, so the
-  cross-partition pair is never deduped.
+- **Midnight-boundary race in dedup across partitions.** The same
+  event retried at 23:59:59 on Day 1 and 00:00:02 on Day 2 lands in
+  different daily partitions. Step C's `GROUP BY` only sees within a
+  day, so the cross-partition pair never gets deduped.
 
-**Unique to Codex:**
+**Only Codex found this:**
 
-- **Truncated CSV from GCS, BQ load succeeds anyway.** Up to ~50%
-  silent data loss can pass the row-count alert because the file is
-  still syntactically valid. Requires Postgres ↔ GCS ↔ BQ tri-count
-  reconciliation to detect.
+- **Truncated CSV from GCS, BQ load succeeds anyway.** Up to ~50% of
+  the data can be silently lost and still pass the row-count alert,
+  because the truncated file is still syntactically valid. You can
+  only catch this by reconciling row counts across Postgres, GCS,
+  and BigQuery.
 
 Full output: [04-case-bq-pipeline/expected-findings.md](./04-case-bq-pipeline/expected-findings.md)
 (13 consensus + 11 unique + 3 triple-blind-spot findings).
@@ -111,42 +119,48 @@ Full output: [04-case-bq-pipeline/expected-findings.md](./04-case-bq-pipeline/ex
 
 ## Why this exists
 
-You already use Claude Code (or Cursor, or Codex CLI) to review your designs.
-It catches a lot. But every model has blind spots:
+You're already using Claude Code (or Cursor, or Codex CLI) to look
+over your designs. It works. But each model has its own quirks:
 
-- **Claude** over-engineers defensiveness
-- **Codex** skips integration details
-- **Gemini** stays surface-level
+- **Claude** tends to over-warn — flagging extra defensive checks
+  that aren't really bugs
+- **Codex** is more concise and sometimes skips integration details
+- **Gemini** stays surface-level and doesn't always dig into
+  specifics
 
-Run **three** in parallel against the same plan, with the same prompt, no
-cross-talk. Then consolidate. The findings only one model caught are gold.
+Have all three review the same plan, with the same prompt, without
+seeing each other's outputs. Then merge their findings. The bugs
+that only one model caught — that's where the value is. Those are
+the ones a single-model review would have quietly missed.
 
 ## What you'll build
 
-By the end of 7 chapters:
-- A `redteam.sh` (< 100 lines) that takes any `plan.md` and produces a
-  severity-ranked findings report from 3 LLMs in parallel
+By the end of seven chapters you'll have:
+
+- A 100-line `redteam.sh` that takes any `plan.md` and gives back a
+  severity-ranked findings report from 3 LLMs running in parallel
 - Reusable prompts for the 5-failure-dimension frame
-- Two real-world cases: BigQuery pipeline + GCP Cloud Run deploy
+- Two real cases worked out in detail: a BigQuery pipeline and a
+  GCP Cloud Run deploy
 
 ## Prerequisites
 
 - **Bash 4+** (works on Git Bash on Windows; macOS bash 3.2 also OK)
 - **GNU `timeout`** (macOS users: `brew install coreutils` gives you
-  `gtimeout`; scripts auto-detect)
-- Three LLM CLIs installed and authenticated:
+  `gtimeout`; the scripts auto-detect it)
+- The three LLM CLIs installed and authenticated:
   - [Claude Code](https://docs.claude.com/en/docs/claude-code)
   - [Codex CLI](https://github.com/openai/codex-cli)
   - [Gemini CLI](https://github.com/google-gemini/gemini-cli)
-- API keys for all three (free tiers cover chapters 1–3; chapters 4–5 need
-  ~$5 total)
+- API keys for all three (free tiers cover chapters 1–3; chapters
+  4–5 need ~$5 total)
 
 > **Tested with**: claude-code v2.1.114, codex-cli v0.125.0,
-> gemini-cli v0.36.0 (as of 2026-04). The three CLIs are not stable
-> public APIs — flags / auth / default model may change. If your
+> gemini-cli v0.36.0 (as of 2026-04). The three CLIs aren't stable
+> public APIs — flags, auth, and default models can change. If your
 > version differs, see [00-prerequisites](./00-prerequisites/).
 
-See [00-prerequisites](./00-prerequisites/) for full setup.
+See [00-prerequisites](./00-prerequisites/) for the full setup.
 
 ## Course outline
 
@@ -155,24 +169,26 @@ See [00-prerequisites](./00-prerequisites/) for full setup.
 | 00 | [Prerequisites](./00-prerequisites/) | Install 3 CLIs, get API keys, budget |
 | 01 | [Why one LLM isn't enough](./01-why-one-llm-isnt-enough/) | Single vs second model: divergence in action |
 | 02 | [The 5-prompt frame](./02-the-five-frame/) | The methodology core |
-| 03 | [Parallel + consolidate + rank](./03-parallel-and-consolidate/) | Bash `&` + 4th LLM call + severity |
+| 03 | [Parallel + consolidate + rank](./03-parallel-and-consolidate/) | Bash `&` + a 4th LLM call + severity |
 | 04 | [Case: BQ pipeline](./04-case-bq-pipeline/) | Real BigQuery design with 7 hidden flaws |
 | 05 | [Case: GCP deploy](./05-case-gcp-deploy/) | Cloud Run + Workflows, IAM/region traps |
 | 06 | [Going further](./06-going-further/) | Final 100-line `redteam.sh` + extension ideas |
 
 ## What this is NOT
 
-- **Not jailbreak / safety-alignment red teaming.** That's a different
-  field.
-- **Not a polished CLI.** Phase 2 will be a separate repo with `pip
-  install`, GitHub Actions, etc. This repo is a tutorial.
-- **Not an orchestrator framework.** The world doesn't need another one.
+- **Not jailbreak / safety-alignment red teaming.** Different field.
+  See [garak](https://github.com/leondz/garak) or
+  [promptfoo](https://github.com/promptfoo/promptfoo).
+- **Not a polished CLI.** Phase 2 will be a separate repo with
+  `pip install`, GitHub Actions, and so on. This repo is a tutorial.
+- **Not yet another multi-agent orchestrator.** Plenty of those
+  already.
 
 ## Standalone prompts
 
-The three prompts in [`prompts/`](./prompts/) are released under **CC0**.
-Use them anywhere — chat UI, your own pipeline, internal tooling.
-Attribution appreciated, not required.
+The three prompts in [`prompts/`](./prompts/) are released under
+**CC0**. Use them anywhere — chat UI, your own pipeline, internal
+tooling. Attribution is appreciated but not required.
 
 ## License
 
@@ -180,10 +196,10 @@ Code & docs: MIT. Prompts in [`prompts/`](./prompts/): CC0.
 
 ## Acknowledgements
 
-Heavily inspired by:
-- [karpathy/micrograd](https://github.com/karpathy/micrograd) — minimal
-  teaching repo done right
+Heavy inspiration from:
+- [karpathy/micrograd](https://github.com/karpathy/micrograd) — what
+  a minimal teaching repo looks like done right
 - [rasbt/LLMs-from-scratch](https://github.com/rasbt/LLMs-from-scratch) —
-  chapter-folder pedagogy
+  the chapter-folder pedagogy
 
 — Hector ([@permoon](https://github.com/permoon))

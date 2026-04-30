@@ -1,35 +1,46 @@
 # Chapter 02 — The 5-prompt frame
 
-The methodology core of `multi-model-redteam`. Read this chapter twice
-before moving on.
+This chapter is the methodology core of the whole repo. Everything
+else builds on the structure described here. Worth reading slowly —
+or twice, if you came here from chapter 1 already convinced.
 
 ## Files
 
-- [`frame.md`](./frame.md) — full essay on the 5 dimensions, why these
-  five, calibration, good vs bad finding, the 10-minute rubric
-- The prompt itself is at [`../prompts/system-prompt.md`](../prompts/system-prompt.md) (CC0)
+- [`frame.md`](./frame.md) — the full essay: why these five
+  dimensions, how to calibrate findings, what makes a finding good
+  vs bad, and a 10-minute rubric for triaging
+- The prompt itself sits at
+  [`../prompts/system-prompt.md`](../prompts/system-prompt.md) (CC0)
 
-## What you'll walk away with
+## What you walk away with
 
-1. **Why** the 5-dimension frame catches what OWASP / SRE miss
-2. **How** to spot a bad finding ("add monitoring") and reject it
-3. A **rubric** to triage findings before they reach severity ranking
+1. **Why** these 5 dimensions catch what OWASP / SRE checklists miss
+2. **How** to recognise a bad finding ("add monitoring" with no
+   thresholds) and reject it
+3. A **rubric** for triaging findings before they hit severity
+   ranking
 
-## TL;DR for the impatient
+## TL;DR
 
-The frame demands, for every design, AT LEAST 2 concrete scenarios across
-each of:
+The frame asks, for any design, AT LEAST 2 concrete failure scenarios
+across each of these five dimensions:
 
-1. **Hidden assumptions** — ordering, uniqueness, atomicity, freshness, caller behavior
-2. **Dependency failures** — upstream / downstream degradation patterns
-3. **Boundary inputs** — empty, huge, malformed, malicious
-4. **Misuse paths** — caller / user / operator getting it wrong
-5. **Rollback & blast radius** — how to recover, scope of damage
+1. **Hidden assumptions** — ordering, uniqueness, atomicity, data
+   freshness, caller behavior
+2. **Dependency failures** — what happens when upstream / downstream
+   services degrade or go down
+3. **Boundary inputs** — empty, single, huge batch, malicious,
+   malformed
+4. **Misuse paths** — caller / user / operator using it the wrong way
+5. **Rollback & blast radius** — how do you recover, and how big is
+   the damage if it goes wrong?
 
-Each scenario must include TRIGGER, IMPACT, DETECTABILITY. Generic advice
-("add monitoring") is explicitly rejected.
+Every scenario must include TRIGGER, IMPACT, and DETECTABILITY.
+Generic advice like "add monitoring" is rejected outright — if you
+can't say what metric, what threshold, what alert, the finding isn't
+ready.
 
-Read [`frame.md`](./frame.md) for why each dimension exists, calibration
-examples, and the 10-minute rubric.
+[`frame.md`](./frame.md) has the full reasoning behind each
+dimension, calibration examples, and the 10-minute rubric.
 
 [← Back to README](../README.md) · [中文版](./README.zh-TW.md)
