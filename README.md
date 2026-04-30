@@ -1,6 +1,8 @@
 # multi-model-redteam
 
-> A 100-line bash script that runs 3 LLMs as your design red team. Whatever one model misses, the other two often catch.
+> Three LLMs review your design in parallel. Whatever one misses, the other two often catch.
+>
+> **No install. No plugin. No marketplace. No npm or pip.** Paste ~30 lines into your `CLAUDE.md` and the next time Claude Code reviews a plan, it fans out to Codex CLI and Gemini CLI in parallel and consolidates the findings.
 
 > **Not jailbreak red teaming.** AI is doing more than just writing
 > code now — it's drafting the plans that drive the code. Any flaw
@@ -17,7 +19,31 @@
 
 ![demo](./assets/hero.gif)
 
-## Quick start (5 lines)
+## Three ways to run it. None require an install of this repo.
+
+Pick the tier that fits. Each is self-contained.
+
+### Tier 0 — Paste ~30 lines into your `CLAUDE.md`
+
+If you're already using Claude Code and have Codex CLI + Gemini
+CLI on your `PATH` (chapter 0 walks you through those), this is
+the lowest-friction path. **That's the install:**
+
+1. Open your project's `CLAUDE.md` (the file Claude Code reads on
+   every session)
+2. Append the snippet from
+   [`claude-md-snippet.md`](./claude-md-snippet.md)
+3. That's it. **No plugin, no marketplace, no npm, no pip,
+   nothing to install for this repo.**
+
+The next time you ask Claude Code to review a plan in this
+project, it fans out to Codex CLI and Gemini CLI in parallel and
+brings back a consolidated report.
+
+### Tier 1 — Run the bash script
+
+Want to red-team a `plan.md` outside Claude Code? Five-line
+setup:
 
 ```bash
 git clone https://github.com/permoon/multi-model-redteam.git
@@ -27,13 +53,15 @@ bash 06-going-further/final/redteam.sh examples/sample-plan.md
 # → ./redteam-out-<timestamp>/ranked.md
 ```
 
-Cost: about $0.05 for the sample plan, $0.50–2.00 for production-size
-plans.
+Cost: about $0.05 for the sample plan, $0.50–2.00 for
+production-size plans.
 
-## Don't want to install? Just copy the prompt
+### Tier 2 — Paste the prompt into a chat UI
 
-Paste this into Claude, ChatGPT, or Gemini's chat UI. No install
-needed.
+No CLI installed at all? Copy the prompt below into Claude,
+ChatGPT, or Gemini's chat UI. You'll only get one model's review
+this way, but it's still a lot better than reviewing without a
+frame.
 
 <details>
 <summary>📋 The 5-failure-dimension red team prompt</summary>
@@ -72,10 +100,7 @@ Design to review:
 </details>
 
 The full method (3 LLMs in parallel + consolidation + severity
-ranking) is in the [Course outline](#course-outline) below. Run that
-prompt against any one of your model of choice and you'll already see
-some lift over reviewing without it; running it across three models
-in parallel is where the real lift comes from.
+ranking) is in the [course outline](#course-outline) below.
 
 ## What you get from one run
 
