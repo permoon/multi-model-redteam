@@ -10,7 +10,7 @@
 #   REDTEAM_TIMEOUT_CMD  path to GNU timeout (default: auto-detect)
 #   REDTEAM_CLAUDE_CMD   default "claude --print"
 #   REDTEAM_CODEX_CMD    default "codex exec --skip-git-repo-check"
-#   REDTEAM_GEMINI_CMD   default "gemini"  (bare; no -p / --print flag)
+#   REDTEAM_GEMINI_CMD   default "gemini --skip-trust"  (headless / non-interactive)
 set -euo pipefail
 
 PLAN=${1:?usage: $0 <plan.md> [out_dir]}
@@ -20,7 +20,7 @@ TIMEOUT_SEC=${REDTEAM_TIMEOUT:-600}
 TIMEOUT_CMD="${REDTEAM_TIMEOUT_CMD:-$(command -v timeout || command -v gtimeout || true)}"
 CLAUDE_CMD=${REDTEAM_CLAUDE_CMD:-"claude --print"}
 CODEX_CMD=${REDTEAM_CODEX_CMD:-"codex exec --skip-git-repo-check"}
-GEMINI_CMD=${REDTEAM_GEMINI_CMD:-"gemini"}
+GEMINI_CMD=${REDTEAM_GEMINI_CMD:-"gemini --skip-trust"}
 
 [ -z "$TIMEOUT_CMD" ] && { echo "FAIL: install GNU timeout (macOS: brew install coreutils)"; exit 1; }
 [ -f "$PROMPT_DIR/system-prompt.md" ] || { echo "FAIL: $PROMPT_DIR/system-prompt.md not found (override with REDTEAM_PROMPTS)"; exit 1; }
