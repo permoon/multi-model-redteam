@@ -63,7 +63,7 @@ p99 跟 malicious-percentile input 下會怎樣？
 |---|---|---|
 | OWASP Top 10 | 安全漏洞 | 太窄 — 漏掉 ops 與資料 |
 | SRE Four Golden Signals | 運維健康（latency / traffic / errors / saturation）| 只在 deploy **之後**有用；design review 需要 deploy **之前**的 lens |
-| **5 點失敗維度** | **Deploy 前的 design review** | **抓得到上面兩個漏掉的，因為系統還沒上線跑** |
+| **5 點失敗維度** | **Deploy 前的 design review** | **針對部署前的 ops / data / IAM 失敗模式，這是上面兩個 frame 容易漏掉的層次** |
 
 5 個維度是 code 完成跟 deploy 之間最常被漏掉的東西。等 SRE signal 噴的時候，
 設計已經在 production。

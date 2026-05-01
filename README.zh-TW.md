@@ -92,8 +92,8 @@ Design to review:
 
 ## 一次跑完你會得到什麼
 
-實測範例（chapter 04 BigQuery pipeline 案例 — 完整 plan 和原始輸出
-詳見 [chapter 4](./04-case-bq-pipeline/README.zh-TW.md)）：
+實測範例（chapter 04 BigQuery pipeline 案例 — 完整 plan 與策展過的
+canonical findings 詳見 [chapter 4](./04-case-bq-pipeline/README.zh-TW.md)）：
 
 <details>
 <summary>📋 範例 finding（chapter 04，2026-04-29 canonical run，節錄）</summary>
@@ -154,7 +154,7 @@ Design to review:
 
 ## Prerequisites
 
-- **Bash 4+**（Windows 用 Git Bash、macOS 預設 bash 3.2 也 OK）
+- **Bash 3.2+**（macOS bash 3.2、Linux bash 5、Windows Git Bash 都測過）
 - **GNU `timeout`**（macOS 使用者：`brew install coreutils` 會給你
   `gtimeout`，腳本會自動偵測）
 - 三家 LLM CLI 都裝好且認證過：
@@ -191,7 +191,12 @@ Design to review:
   [promptfoo](https://github.com/promptfoo/promptfoo)
 - **不是 polished CLI。** Phase 2 會是另一個 repo，會有 `pip install`、
   GitHub Actions 之類的東西。這個 repo 是教學
-- **不是又一個 multi-agent orchestrator。** 那種已經夠多了
+- **不是又一個 multi-agent orchestrator。** 想要 marketplace plugin
+  或 consensus-gating CLI 之類的安裝式 framework，請看
+  [claude-octopus](https://github.com/nyldn/claude-octopus)、
+  [cerberus](https://github.com/charlieyou/cerberus)、
+  [agent-council](https://github.com/yogirk/agent-council)。這個 repo
+  是相反方向 — 一份教學 + 貼進你 `CLAUDE.md` 的 ~30 行
 
 ## Standalone prompts
 

@@ -49,9 +49,8 @@ bash run-redteam.sh
   `FIRESTORE_PROJECT=my-prod-project`。同一份 yaml 部署到 staging，
   staging 服務就會寫到 prod 的 Firestore。PII / 計費風險。
 - **Reliability gap。** Workflows 那邊只有一個 `http.post` step，
-  沒有 `retry` block。一次 transient HTTP 失敗（或 Cloud Run cold
-  start 超過 workflow 預設 HTTP timeout）就丟掉整個小時的新聞抓
-  取。
+  沒有 `retry` block。一次 transient HTTP 失敗（網路抽搐、5xx、
+  instance 中途 restart）整個小時的 batch 就靜默丟掉。
 - **Latency SLO 衝突。** `minScale: 0` 跟 95% < 500ms 的 latency
   目標互斥。Idle scale-down 後，Cloud Run 在 Node.js 上的 cold
   start 通常要 2-5 秒。所以每小時 batch 的第一個 request 必定爆
