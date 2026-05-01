@@ -64,7 +64,7 @@ How do you recover, and how big is the damage?
 |---|---|---|
 | OWASP Top 10 | Security vulnerabilities | Too narrow — misses ops & data |
 | SRE Four Golden Signals | Operational health (latency / traffic / errors / saturation) | Only useful *after* deploy; design review needs a pre-deploy lens |
-| **5-failure-dimension** | **Pre-deploy design review** | **Catches everything the above miss because the system isn't running yet** |
+| **5-failure-dimension** | **Pre-deploy design review** | **Targets the design-stage ops, data, and IAM failures the frames above tend to miss** |
 
 The 5 dimensions are the things most often missed *between* code completion
 and deploy. By the time SRE signals fire, the design is already in

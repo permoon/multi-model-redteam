@@ -19,10 +19,12 @@ one with distributed state, IAM, data integrity, or significant
 blast radius — run a multi-LLM red team review.
 
 1. Use `run_in_background` to dispatch the same prompt + plan to
-   Codex CLI and Gemini CLI in parallel:
-   - `codex exec --skip-git-repo-check` (stdin: prompt + plan)
-   - `gemini` (stdin: prompt + plan)
-2. While they run, do your own review with the same prompt.
+   Codex CLI and Gemini CLI in parallel. Concretely, write the
+   `<prompt + plan>` text to a temp file and run:
+   - `codex exec --skip-git-repo-check < /tmp/redteam-input.txt > /tmp/codex.md 2>&1`
+   - `gemini < /tmp/redteam-input.txt > /tmp/gemini.md 2>&1`
+2. While they run, do your own review with the same prompt and write
+   to `/tmp/claude.md`.
 3. Use the adversarial mindset only: find failure modes, do not
    propose fixes.
 
@@ -43,14 +45,15 @@ Prompt to give every model (yourself included):
 > Reject abstract advice ("add monitoring"). Say what metric, what
 > threshold, what alert.
 
-After all three return, consolidate into:
+After all three return, read `/tmp/{claude,codex,gemini}.md` and
+consolidate into:
 - Consensus (≥ 2 teams agreed)
 - Unique (1 team only — could be that team's insight, or could be
   the others' blind spot)
 - Apparent disagreements (escalate to user)
 
 Severity: cap MUST-FIX at 5 unless the design is architecturally
-broken.
+broken. Respond in English.
 
 --- SNIP --- (end) ---
 ```

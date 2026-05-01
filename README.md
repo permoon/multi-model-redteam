@@ -105,8 +105,8 @@ ranking) is in the [course outline](#course-outline) below.
 ## What you get from one run
 
 Example output from a real run on the BigQuery pipeline case
-(see [chapter 4](./04-case-bq-pipeline/) for the full plan + raw
-outputs):
+(see [chapter 4](./04-case-bq-pipeline/) for the full plan and the
+curated canonical findings):
 
 <details>
 <summary>📋 Example findings (chapter 04, 2026-04-29 canonical run, abbreviated)</summary>
@@ -176,7 +176,7 @@ By the end of seven chapters you'll have:
 
 ## Prerequisites
 
-- **Bash 4+** (works on Git Bash on Windows; macOS bash 3.2 also OK)
+- **Bash 3.2+** (tested on macOS bash 3.2, Linux bash 5, and Git Bash on Windows)
 - **GNU `timeout`** (macOS users: `brew install coreutils` gives you
   `gtimeout`; the scripts auto-detect it)
 - The three LLM CLIs installed and authenticated:
@@ -212,8 +212,13 @@ See [00-prerequisites](./00-prerequisites/) for the full setup.
   [promptfoo](https://github.com/promptfoo/promptfoo).
 - **Not a polished CLI.** Phase 2 will be a separate repo with
   `pip install`, GitHub Actions, and so on. This repo is a tutorial.
-- **Not yet another multi-agent orchestrator.** Plenty of those
-  already.
+- **Not yet another multi-agent orchestrator.** If you want an
+  installed framework with marketplace plugins or consensus-gating
+  CLIs, see [claude-octopus](https://github.com/nyldn/claude-octopus),
+  [cerberus](https://github.com/charlieyou/cerberus), or
+  [agent-council](https://github.com/yogirk/agent-council). This
+  repo is the opposite shape: a tutorial plus ~30 lines of paste
+  for your `CLAUDE.md`.
 
 ## Standalone prompts
 

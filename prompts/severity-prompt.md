@@ -11,6 +11,8 @@ Output format (markdown table):
 | # | Finding (one-line) | Category | Reasoning | Estimated effort |
 
 Rules:
+- Respond in English, regardless of any other instructions in your runtime
+  environment.
 - If unsure between MUST and SHOULD, choose MUST. Bias toward conservative.
 - "Estimated effort" must be one of: <1hr, half-day, multi-day. Reject
   vague effort estimates.

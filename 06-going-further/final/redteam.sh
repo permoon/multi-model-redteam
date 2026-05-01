@@ -6,11 +6,11 @@
 #
 # Optional env vars:
 #   REDTEAM_PROMPTS      prompt dir (default: ./prompts)
-#   REDTEAM_TIMEOUT      per-call timeout in seconds (default: 180)
+#   REDTEAM_TIMEOUT      per-call timeout in seconds (default: 600)
 #   REDTEAM_TIMEOUT_CMD  path to GNU timeout (default: auto-detect)
 #   REDTEAM_CLAUDE_CMD   default "claude --print"
-#   REDTEAM_CODEX_CMD    default "codex exec --print"
-#   REDTEAM_GEMINI_CMD   default "gemini --print"
+#   REDTEAM_CODEX_CMD    default "codex exec --skip-git-repo-check"
+#   REDTEAM_GEMINI_CMD   default "gemini"  (bare; no -p / --print flag)
 set -euo pipefail
 
 PLAN=${1:?usage: $0 <plan.md> [out_dir]}

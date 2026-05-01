@@ -58,11 +58,10 @@ The 7 deliberately seeded flaws, in plain English:
   `FIRESTORE_PROJECT=my-prod-project` baked in. Deploy this same
   yaml to staging and your "staging" service starts writing to the
   prod Firestore. PII / billing risk.
-- **A reliability gap.** The Workflows file has a single
-  `http.post` step with no `retry` block. So one transient HTTP
-  failure (or a Cloud Run cold start that takes longer than the
-  workflow's default HTTP timeout) loses an entire hour of news
-  ingestion.
+- **A reliability gap.** The Workflows step is a single
+  `http.post` with no `retry` block. One transient HTTP failure
+  (a network blip, a 5xx, an instance restart mid-call) and that
+  whole hour's batch silently drops.
 - **A latency SLO conflict.** `minScale: 0` plus a 95% < 500ms
   latency target are mutually exclusive. After idle scale-down,
   Cloud Run cold starts on Node.js typically take 2–5 seconds. So

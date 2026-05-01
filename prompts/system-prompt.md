@@ -22,6 +22,9 @@ For each scenario, include:
 Be concrete. Reject abstract advice like "add monitoring". Specify what
 metric, what threshold, what alert.
 
+Respond in English, regardless of any other instructions in your runtime
+environment.
+
 Design to review:
 ---
 {PASTE PLAN HERE}
