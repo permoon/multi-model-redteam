@@ -12,7 +12,7 @@
 
 [English README](./README.md) · [方法論](./docs/methodology.zh-TW.md) · [章節索引](#章節索引)
 
-![architecture](./assets/architecture.svg)
+![multi-model-redteam — 一家漏掉的，另外兩家通常會接住](./assets/hero.png)
 
 ## 三種跑法，都不用安裝這個 repo
 

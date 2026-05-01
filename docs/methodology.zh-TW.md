@@ -1,5 +1,7 @@
 # 5 個檢核維度的方法論
 
+![Multi-model 設計紅隊 — 從單一 plan 到 ranked findings 的 4 階段流程，含 consensus / unique / blind-spot 三類](../assets/architecture.png)
+
 當你叫 LLM「review 這份設計」，拿回來的通常是抽象建議 — 「注意 edge
 case」、「加 monitoring」、「小心 race condition」。每一條技術上都
 對，但實際上幾乎沒用。沒有具體可以動手做的事、沒有 metric 可以拉

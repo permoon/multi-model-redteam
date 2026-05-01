@@ -1,5 +1,7 @@
 # The 5-failure-dimension methodology
 
+![Multi-model design red team — 4-phase flow from a single plan to ranked findings, with consensus / unique / blind-spot categories](../assets/architecture.png)
+
 When you ask an LLM to "review this design," what you usually get
 back is abstract advice — "consider edge cases," "add monitoring,"
 "watch for race conditions." Each item is technically true and

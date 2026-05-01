@@ -17,7 +17,7 @@
 
 [中文 README](./README.zh-TW.md) · [Methodology](./docs/methodology.md) · [Course outline](#course-outline)
 
-![architecture](./assets/architecture.svg)
+![multi-model-redteam — one model misses, the other two often catch](./assets/hero.png)
 
 ## Three ways to run it. None require an install of this repo.
 
