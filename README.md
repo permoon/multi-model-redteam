@@ -53,8 +53,9 @@ bash 06-going-further/final/redteam.sh examples/sample-plan.md
 # → ./redteam-out-<timestamp>/ranked.md
 ```
 
-Cost: about $0.05 for the sample plan, $0.50–2.00 for
-production-size plans.
+Cost: about $0.10–0.20 for the sample plan, $0.50–2.00 for
+production-size plans. Wall time ~5–15 minutes (the consolidate +
+rank steps dominate).
 
 ### Tier 2 — Paste the prompt into a chat UI
 

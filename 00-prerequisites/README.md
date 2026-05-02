@@ -96,7 +96,7 @@ Per full red-team run on a typical plan:
 
 | Plan size | Tokens (3 models) | Cost (USD) |
 |-----------|-------------------|------------|
-| Small (sample-plan.md, ~50 lines) | ~5k in, ~5k out | ~$0.05 |
+| Small (sample-plan.md, ~50 lines) | ~5k in, ~5k out | ~$0.10–0.20 |
 | Medium (chapter 4 BQ plan, ~100 lines) | ~10k in, ~12k out | ~$0.30 |
 | Large (chapter 5 GCP plan, ~150 lines) | ~15k in, ~15k out | ~$0.50 |
 

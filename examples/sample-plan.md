@@ -1,7 +1,8 @@
 # Plan: Discord bot rate limit
 
-A minimal sample plan for the quick-start. Designed to finish a full red-team
-run in ~30 seconds at low cost (~$0.05).
+A minimal sample plan for the quick-start. A full red-team run on this
+plan finishes in ~5–15 minutes (the consolidate + rank steps dominate;
+the parallel review itself is faster) and costs about $0.10–0.20.
 
 ## Background
 

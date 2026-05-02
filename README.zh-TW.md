@@ -40,7 +40,8 @@ bash 06-going-further/final/redteam.sh examples/sample-plan.md
 # → ./redteam-out-<timestamp>/ranked.md
 ```
 
-費用：sample plan 約 $0.05；production-size plan 約 $0.50–2.00（鎂刀）。
+費用：sample plan 約 $0.10–0.20；production-size plan 約 $0.50–2.00（鎂刀）。
+單次 wall time 約 5–15 分鐘（consolidate + rank 那兩步 Claude call 是 bottleneck）。
 
 ### Tier 2 — 把 prompt 貼到 chat UI
 

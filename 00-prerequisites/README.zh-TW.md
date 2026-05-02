@@ -92,7 +92,7 @@ Checking Gemini CLI...
 
 | Plan 大小 | Token（三家合計）| 費用（USD）|
 |-----------|------------------|-----------|
-| 小（sample-plan.md，約 50 行）| ~5k in、~5k out | ~$0.05 |
+| 小（sample-plan.md，約 50 行）| ~5k in、~5k out | ~$0.10–0.20 |
 | 中（chapter 4 BQ plan，約 100 行）| ~10k in、~12k out | ~$0.30 |
 | 大（chapter 5 GCP plan，約 150 行）| ~15k in、~15k out | ~$0.50 |
 
