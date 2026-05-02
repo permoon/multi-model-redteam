@@ -60,9 +60,8 @@ echo "${STATUS[claude]}"                  # ← 永遠是空的！
 
 ### Consolidator 是第 4 次 LLM call
 
-三家的原始 output 可能：意見不同、語意一樣但用詞不同、同一個
-finding 講三種說法。`diff` 跟 `awk` 沒辦法用**語意**合併，只能用
-字串。所以我們用第 4 次 LLM call 配上嚴格的 schema：
+三家的原始 output 可能意見不同、語意一樣但用詞不同、同一個finding 講三種說法。`diff` 跟 `awk` 沒辦法用**語意**合併，
+只能用字串。所以我們用第 4 次 LLM call 配上嚴格的 schema：
 
 - **共識**（≥ 2 家同意）
 - **獨有**（只有 1 家 — 可能是那家的 insight，也可能是另外兩家

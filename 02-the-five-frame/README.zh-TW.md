@@ -1,7 +1,7 @@
 # Chapter 02 — 5 點失敗劇本框架
 
-這章是整個 repo 的方法論核心。後面所有東西都建立在這個結構上。值得
-慢慢讀 — 從 chapter 1 過來、已經被說服的話，建議讀兩遍。
+這章是整個 repo 的方法論核心。後面所有東西都建立在這個框架上，建議
+至少細讀一次。
 
 ## 檔案
 
@@ -11,7 +11,7 @@
 - prompt 本身在
   [`../prompts/system-prompt.md`](../prompts/system-prompt.md)（CC0）
 
-## 你會帶走的
+## 你會理解：
 
 1. **為什麼** 這 5 維度抓得到 OWASP / SRE checklist 漏掉的東西
 2. **怎麼** 認出一個壞 finding（譬如「加 monitoring」但沒講閾值）

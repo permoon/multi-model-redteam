@@ -1,10 +1,10 @@
 # multi-model-redteam
 
-> 三家 LLM 平行對你的設計做 review。一家沒看到的，另外兩家通常會接住。
+> 三家主流LLM模型平行對你的計畫做 review。一家可能會漏，三家一起上，通常可以發現超過80%的設計問題。
 >
 > **不用裝 plugin、不用上 marketplace、不用 npm 或 pip — 什麼都不用裝。** 把 30 行貼進你的 `CLAUDE.md`，下次叫 Claude Code review 計畫的時候，它會自己分頭叫 Codex CLI 跟 Gemini CLI 平行跑，再把三家的 finding 整合回來。
 
-> **這不是 jailbreak 紅隊**。這年頭大家都用 AI 寫執行計畫，而執行計畫的好壞會從源頭影響 AI 最後的產出，所以在計畫階段就帶入更強大、更完整的設計紅隊就更顯重要。
+> **特別提醒：這不是 jailbreak 紅隊**  這年頭大家都用 AI 寫執行計畫，而執行計畫的好壞會從源頭影響 AI 最後的產出，所以在計畫階段就帶入針對plan挑毛病的redtean機制就更為重要。
 
 > 如果你找的是 prompt injection 或 safety alignment，請看
 > [garak](https://github.com/leondz/garak) 或
@@ -20,9 +20,9 @@
 
 ### Tier 0 — 把 30 行貼進你的 `CLAUDE.md`（最低門檻）
 
-如果你已經在用 Claude Code、而且 Codex CLI 跟 Gemini CLI 已經在你的 `PATH` 上（chapter 0 會帶你裝），這就是門檻最低的玩法：
+如果你已經在用 Claude Code、而且 Codex CLI 跟 Gemini CLI 已經在你的 `PATH` 上（chapter 0 會帶你裝），這就是門檻最低的實踐方式：
 
-1. 打開你專案的 `CLAUDE.md`（Claude Code 每次 session 都會讀的那個檔案）
+1. 打開你專案的 `CLAUDE.md`
 2. 把 [`claude-md-snippet.md`](./claude-md-snippet.md) 裡的 snippet 區塊貼到最後面
 3. 沒了。**不用裝 plugin、不用上 marketplace、不用 npm、不用 pip、什麼都不用裝。連這個 repo 都不用 clone。**
 
@@ -30,7 +30,7 @@
 
 ### Tier 1 — 跑 bash 腳本
 
-想在 Claude Code 之外對某個 `plan.md` 直接跑紅隊？5 行裝起來：
+想在 Claude Code 之外對某個 `plan.md` 直接跑紅隊？ 5 行裝起來：
 
 ```bash
 git clone https://github.com/permoon/multi-model-redteam.git
@@ -42,6 +42,8 @@ bash 06-going-further/final/redteam.sh examples/sample-plan.md
 
 費用：sample plan 約 $0.10–0.20；production-size plan 約 $0.50–2.00（鎂刀）。
 單次 wall time 約 5–15 分鐘（consolidate + rank 那兩步 Claude call 是 bottleneck）。
+
+**如果你用訂閱制自然就沒有額外費用。**
 
 ### Tier 2 — 把 prompt 貼到 chat UI
 
