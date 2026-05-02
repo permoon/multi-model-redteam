@@ -15,9 +15,11 @@
 > [garak](https://github.com/leondz/garak) or
 > [promptfoo](https://github.com/promptfoo/promptfoo).
 
-[中文 README](./README.zh-TW.md) · [Methodology](./docs/methodology.md) · [Course outline](#course-outline)
+[中文 README](./README.zh-TW.md) · [Methodology](./docs/methodology.md) · [Course outline](#course-outline) · [Write-up on DEV ↗](https://dev.to/hector_haung_da45eb10a814/ai-is-very-good-at-implementing-bad-plans-4d80)
 
 ![multi-model-redteam — one model misses, the other two often catch](./assets/hero.png)
+
+> 📖 **Full write-up on DEV**: [AI Is Very Good at Implementing Bad Plans](https://dev.to/hector_haung_da45eb10a814/ai-is-very-good-at-implementing-bad-plans-4d80) — the story behind this repo, the alias-shadowing bug only Claude caught, and why 3 models break the echo chamber.
 
 ## Three ways to run it. None require an install of this repo.
 

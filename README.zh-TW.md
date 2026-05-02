@@ -10,9 +10,11 @@
 > [garak](https://github.com/leondz/garak) 或
 > [promptfoo](https://github.com/promptfoo/promptfoo)。
 
-[English README](./README.md) · [方法論](./docs/methodology.zh-TW.md) · [章節索引](#章節索引)
+[English README](./README.md) · [方法論](./docs/methodology.zh-TW.md) · [章節索引](#章節索引) · [DEV 上的完整寫法 ↗](https://dev.to/hector_haung_da45eb10a814/ai-is-very-good-at-implementing-bad-plans-4d80)
 
 ![multi-model-redteam — 一家漏掉的，另外兩家通常會接住](./assets/hero.png)
+
+> 📖 **DEV 完整文章**：[AI Is Very Good at Implementing Bad Plans](https://dev.to/hector_haung_da45eb10a814/ai-is-very-good-at-implementing-bad-plans-4d80) — 這個 repo 背後的故事、那個只有 Claude 抓到的 alias-shadowing bug、以及為什麼三家 LLM 可以打破 echo chamber。
 
 ## 三種跑法，都不用安裝這個 repo
 
